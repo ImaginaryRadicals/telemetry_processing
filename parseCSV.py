@@ -20,7 +20,7 @@ def getCSVTable(filename=0):
         root.withdraw()
         filename = filedialog.askopenfilename()
 
-    dataTable = []
+    dataTable = {}
     fieldNames = []
 
     with open(filename, 'r') as csvfile:
@@ -29,17 +29,17 @@ def getCSVTable(filename=0):
         fieldNames = next(reader)
         for i, field in enumerate(fieldNames):
             fieldNames[i] = fieldNames[i].strip()
+            # Populate dictionary names with empty lists.
+            dataTable[fieldNames[i]] = []
         print(fieldNames)
 
         for row in reader:
-            thisRecord = {}
             for i, item in enumerate(row):
                 try:
-                    thisRecord[fieldNames[i]] = float(item)
+                    newDataItem = float(item)
                 except:
-                    thisRecord[fieldNames[i]] = item
-
-            dataTable.append(thisRecord)
+                    newDataItem = item                
+                dataTable[fieldNames[i]].append(newDataItem)
     return dataTable
 
 #%% Analysis Tools
@@ -59,8 +59,8 @@ def diff(value,time,maxRate=-1):
 
 def plotJewelArm(dataTable):
     # Extract data as lists using list comprehensions.
-    time = [record['time'] for record in dataTable]
-    jewelArm = [record['JEWEL_ARM'] for record in dataTable]
+    time = dataTable['time']
+    jewelArm = dataTable['JEWEL_ARM']
     plt.figure(1)
     plt.clf()
     plt.title("Jewel Arm over time")
@@ -72,10 +72,10 @@ def plotJewelArm(dataTable):
 
 def plotXYPosition(dataTable):
     # Extract data as lists using list comprehensions.
-    time = [record['time'] for record in dataTable]
-    x = [record['x_in'] for record in dataTable]
-    y = [record['y_in'] for record in dataTable]
-    theta = [record['theta_rad'] for record in dataTable]
+    time = dataTable['time']
+    x = dataTable['x_in']
+    y = dataTable['y_in']
+    theta = dataTable['theta_rad']
     plt.figure(2)
     plt.clf()
     plt.title("Mecanum Navigation Position")
@@ -87,10 +87,10 @@ def plotXYPosition(dataTable):
     
 def plotMotorTickRateVsPower(dataTable):
     # Extract data as lists using list comprehensions.
-    time = [record['time'] for record in dataTable]
-    motorTicks = [record['DRIVE_FRONT_LEFT_ticks'] for record in dataTable]
+    time = dataTable['time']
+    motorTicks = dataTable['DRIVE_FRONT_LEFT_ticks']
     motorTickRate = diff(motorTicks,time)
-    motorPower = [record['DRIVE_FRONT_LEFT_power'] for record in dataTable]
+    motorPower = dataTable['DRIVE_FRONT_LEFT_power']
     plt.figure(3)
     plt.clf()
     plt.title("Motor Ticks vs Power")
