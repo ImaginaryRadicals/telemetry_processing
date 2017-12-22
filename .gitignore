@@ -1,2 +1,4 @@
 *.swp
 *.csv
+
+__pycache__/
