@@ -40,14 +40,16 @@ def diff(value,time,maxRate=-1):
 
 #%% Visualization Routines
 
-def plotJewelArm(dataTable):
+def plotServos(dataTable):
     time = dataTable['time']
     jewelArm = dataTable['JEWEL_ARM']
     plt.clf()
-    plt.title("Jewel Arm over time")
+    plt.title("Servo Positions")
     plt.plot(time,jewelArm, '-', label='jewelArm')
+    plt.plot(time,dataTable['CLAW_LEFT'],'-.', label='clawLeft')
+    plt.plot(time,dataTable['CLAW_RIGHT'], ':', label='clawRight')
     plt.xlabel('Time (s)')
-    plt.ylabel('Jewel Arm Servo [0,1]')
+    plt.ylabel('Servo Positions [0,1]')
     plt.legend()
     plt.show()
 
@@ -109,7 +111,7 @@ def main():
     plt.close("all")
     
     plt.figure()
-    plotJewelArm(dataTable)
+    plotServos(dataTable)
     plt.figure()
     plotXYPosition(dataTable)
 #    plt.figure()
