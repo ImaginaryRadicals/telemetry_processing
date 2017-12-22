@@ -47,7 +47,6 @@ def plotJewelArm(dataTable):
     # Extract data as lists using list comprehensions.
     time = [record['time'] for record in dataTable]
     jewelArm = [record['JEWEL_ARM'] for record in dataTable]
-
     plt.figure(1)
     plt.clf()
     plt.title("Jewel Arm over time")
@@ -57,11 +56,26 @@ def plotJewelArm(dataTable):
     plt.legend()
     plt.show()
 
+def plotXYPosition(dataTable):
+    # Extract data as lists using list comprehensions.
+    time = [record['time'] for record in dataTable]
+    x = [record['x_in'] for record in dataTable]
+    y = [record['y_in'] for record in dataTable]
+    theta = [record['theta_rad'] for record in dataTable]
+    plt.figure(2)
+    plt.clf()
+    plt.title("Mecanum Navigation Position")
+    plt.plot(x,y, 'r--', label='position')
+    plt.xlabel('X inches')
+    plt.ylabel('Y inches')
+    plt.legend()
+    plt.show()
 
 def main():
 
     dataTable = getCSVTable('telemetry1.csv')
     plotJewelArm(dataTable)
+    plotXYPosition(dataTable)
 
 
 if __name__ == '__main__':
