@@ -103,6 +103,19 @@ def plotMotorData(dataTable, motorName):
 #    plt.legend()
     plt.show()
     
+def plotSensorData(dataTable):
+    time = dataTable['time']
+    
+    plt.clf()
+    plt.title("Sensor Outputs")
+    plt.plot(time,dataTable['light_level'], 'k-', label='light level')
+    plt.plot(time,dataTable['red_channel'],'r-.', label='red level')
+    plt.plot(time,dataTable['blue_channel'], 'b:', label='blue level')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Sensor Data [0,1]')
+    plt.legend()
+    plt.show()
+    
 
 #%% Main routine, run if module is executed directly, rather than imported.
 
@@ -116,10 +129,13 @@ def main():
     plotXYPosition(dataTable)
 #    plt.figure()
 #    plotMotorTickRateVsPower(dataTable)
+    plt.figure()
+    plotSensorData(dataTable)
     
     # Display data for all motors
     driveMotors = ['DRIVE_FRONT_LEFT','DRIVE_FRONT_RIGHT',
-                   'DRIVE_BACK_LEFT','DRIVE_BACK_RIGHT']
+                   'DRIVE_BACK_LEFT','DRIVE_BACK_RIGHT', 
+                   'ARM_MOTOR']
     for i,motor in enumerate(driveMotors):
         plotMotorData(dataTable,motor)
 

@@ -19,6 +19,8 @@ def getDictionary(filename=0):
         root = tk.Tk()
         root.withdraw()
         filename = filedialog.askopenfilename()
+        print(filename)
+        print()
 
     dataTable = {}
     fieldNames = []
