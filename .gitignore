@@ -4,3 +4,8 @@
 __pycache__/
 
 \.ipynb_checkpoints/
+
+*.pdf
+/telemetryPackets
+
+images/

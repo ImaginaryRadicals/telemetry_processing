@@ -105,7 +105,6 @@ def plotMotorData(dataTable, motorName):
     
 def plotSensorData(dataTable):
     time = dataTable['time']
-    
     plt.clf()
     plt.title("Sensor Outputs")
     plt.plot(time,dataTable['light_level'], 'k-', label='light level')
@@ -115,20 +114,59 @@ def plotSensorData(dataTable):
     plt.ylabel('Sensor Data [0,1]')
     plt.legend()
     plt.show()
+
+def plotControlerSticks(dataTable):
+    time = dataTable['time']
+    plt.clf()
+    plt.title("Controller Stick Inputs")
+    plt.plot(time,dataTable['left_stick_x'], 'k-', label='Left Stick X')
+    plt.plot(time,dataTable['left_stick_y'],'r-.', label='Left Stick Y')
+    plt.plot(time,dataTable['right_stick_x'], 'b:', label='Right Stick X')
+    plt.plot(time,dataTable['right_stick_y'], 'g-.', label='Right Stick Y')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Input Data [-1,1]')
+    plt.legend()
+    plt.show()
     
+def plotControlerAnalogTriggers(dataTable):
+    time = dataTable['time']
+    plt.clf()
+    plt.title("Controller Analog Trigger Inputs")
+    plt.plot(time,dataTable['left_trigger'], 'r:', label='Left Trigger')
+    plt.plot(time,dataTable['right_trigger'],'b-.', label='Right Trigger')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Input Data [0,1]')
+    plt.legend()
+    plt.show()    
+    
+def plotControlerButtons(dataTable):
+    time = dataTable['time']
+    plt.clf()
+    plt.title("Controller Button Inputs")
+    plt.plot(time,dataTable['a_button'], 'g:', label='A button')
+    plt.plot(time,dataTable['b_button'],'r:', label='B button')
+    plt.plot(time,dataTable['x_button'],'b:', label='X button')    
+    plt.plot(time,dataTable['y_button'],'y:', label='Y button')
+    plt.plot(time,dataTable['left_bumper'],'c-.', label='Left Bumper')    
+    plt.plot(time,dataTable['right_bumper'],'m--', label='Right Bumper')
+    plt.plot(time,dataTable['left_stick_button'],'k:', label='Left Stick Button')    
+    plt.plot(time,dataTable['right_stick_button'],'m:', label='Right Stick Button')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Input Data [0,1]')
+    plt.legend()
+    plt.show()      
 
 #%% Main routine, run if module is executed directly, rather than imported.
 
 def main():
-    dataTable = parseCSV.getDictionary('telemetry1_defectiveBackLeftEncoder.csv')
+    dataTable = parseCSV.getDictionary('telemetry.csv')
+    controllerDataTable = parseCSV.getDictionary('controls.csv')
     plt.close("all")
     
     plt.figure()
     plotServos(dataTable)
     plt.figure()
     plotXYPosition(dataTable)
-#    plt.figure()
-#    plotMotorTickRateVsPower(dataTable)
     plt.figure()
     plotSensorData(dataTable)
     
@@ -139,6 +177,13 @@ def main():
     for i,motor in enumerate(driveMotors):
         plotMotorData(dataTable,motor)
 
+    # Controller data plots
+    plt.figure()
+    plotControlerSticks(controllerDataTable)
+    plt.figure()
+    plotControlerAnalogTriggers(controllerDataTable)
+    plt.figure()
+    plotControlerButtons(controllerDataTable)    
 
 if __name__ == '__main__':
     main()
