@@ -7,7 +7,7 @@ Created on Thu Dec 21 21:00:52 2017
 
 # getCSVTable
 import parseCSV
-
+import math
 #import csv
 import matplotlib.pyplot as plt
 import numpy as np
@@ -54,16 +54,36 @@ def plotServos(dataTable):
     plt.show()
 
 def plotXYPosition(dataTable):
-    time = dataTable['time']
     x = dataTable['x_in']
     y = dataTable['y_in']
-    theta = dataTable['theta_rad']
     plt.clf()
     plt.title("Mecanum Navigation Position")
     plt.plot(x,y, 'r--.', label='position')
     plt.xlabel('X inches')
     plt.ylabel('Y inches')
     plt.legend()
+    plt.show()
+    
+def plotPositionVsTime(dataTable):
+    time = dataTable['time']
+    x = dataTable['x_in']
+    y = dataTable['y_in']
+    theta_deg = [item*180/math.pi for item in dataTable['theta_rad']]
+    fig, ax1 = plt.subplots()
+    plt.title("Mecanum Navigation Position vs Time")
+    ax1.plot(time, x, 'b:', label='X inches')
+    ax1.plot(time, y, 'r:', label='Y inches')
+    ax1.set_xlabel('time (s)')
+    ax1.set_ylabel('Distance (inches)', color='b')
+    ax1.tick_params('y', colors='b')
+    plt.legend()
+    
+    ax2 = ax1.twinx()
+    ax2.plot(time, theta_deg, 'k:', label='Rotation degrees CCW')
+    ax2.set_ylabel('Rotation degrees CCW', color='k')
+    ax2.tick_params('y', colors='k')
+    fig.tight_layout()
+    #plt.legend()
     plt.show()
 
 def plotMotorTickRateVsPower(dataTable):
@@ -167,6 +187,8 @@ def main():
     plotServos(dataTable)
     plt.figure()
     plotXYPosition(dataTable)
+    
+    plotPositionVsTime(dataTable)
     plt.figure()
     plotSensorData(dataTable)
     
